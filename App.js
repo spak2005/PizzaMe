@@ -1,20 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
+import { StyleSheet, SafeAreaView, StatusBar, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { AuthNavigator } from './architecture/components/AuthNavigator';
+import { Popular } from './architecture/screens/Popular';
 
+            
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      {/* {<HomeScreen/>} */}
+      {/* <Testing/> */}
+      <NavigationContainer>
+        <AuthNavigator/>
+      </NavigationContainer>
+
+      
+     
+      <ExpoStatusBar style="auto" />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flex:1,
+    backgroundColor:'#FFBC80',
+    marginTop:StatusBar.currentHeight
   },
 });
