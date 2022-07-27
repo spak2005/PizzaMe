@@ -15,13 +15,13 @@ const HistoryData =
 
     return(
         
-            <FlatList data={HistoryData} renderItem={({item})=>{
-                return(
+            <FlatList data={HistoryData} renderItem={({item})=>
+                (
                     <View style={styles.container}>
                         <View style={styles.header}>
                             <View style={styles.priceName}>
                                 <Text style={styles.priceText}>N{item.price}</Text>
-                                <Text style={styles.nameText}>{item.pizzaName}</Text>
+                                <Text style={styles.nameText}>{item.pizzaName} Pizza</Text>
                             </View>
                             <View style={styles.dateTime}>
                                 <Text style={styles.date}>{item.date}</Text>
@@ -35,7 +35,7 @@ const HistoryData =
                         </View>
                     </View>
                 )
-            }}/>
+            }/>
 
           
     )

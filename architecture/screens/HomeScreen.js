@@ -9,6 +9,9 @@ import { Profile } from './Profile';
 import { Customize } from './Customize';
 import { Notifications } from './Notifications';
 import { Ionicons } from '@expo/vector-icons';
+import { Theme } from '../Theme/Theme';
+import styled from 'styled-components/native';
+
 
 const data = {
     favourites: [
@@ -45,7 +48,7 @@ const data = {
                 <FlatList data={data.favourites} renderItem={({ item }) => {
                     return (
                         <TouchableOpacity style={styles.popularItem} onPress={() => {
-                            navigation.navigate('Popular', {
+                            navigation.push('Popular', {
                                 pizzaImg:item.thumbnail,
                                 pizzaName:item.name,
                                 pizzaRating:item.rating,
@@ -68,14 +71,13 @@ const data = {
                             <Card.Cover source={{ uri: item.thumbnail }} />
                             <Card.Content>
                                 <Title>{item.name}</Title>
-                                <Paragraph>{item.note}</Paragraph>
+                                  <Paragraph>{item.note}</Paragraph>
                                 <Button mode='contained' color='coral'>Order</Button>
                             </Card.Content>
                         </Card>
                     );
                 }} key={({ item }) => { item.id }} />
             </View>
-
         </View>
     );
 }

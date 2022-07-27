@@ -7,7 +7,6 @@ import { faStarHalfStroke } from "@fortawesome/free-solid-svg-icons";
 export function Popular({route,navigation}){
     
     const {pizzaImg,pizzaName,pizzaRating,pizzaPrice} = route.params;
-
      
      
         color1 = '' 
