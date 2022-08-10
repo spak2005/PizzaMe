@@ -2,6 +2,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Intro } from '../screens/intro';
 import { Home } from '../screens/HomeScreen'
 import { Popular } from '../screens/Popular';
+import { Theme } from '../Theme/Theme';
+import { Order } from '../screens/Order';
 
 export function AuthNavigator(){
 
@@ -11,11 +13,12 @@ export function AuthNavigator(){
         <Stack.Navigator initialRouteName='Intro' screenOptions={{headerShown:false}}>
             <Stack.Screen name='Intro' component={Intro}/>
             <Stack.Screen name='Home' component={Home}/>
+            <Stack.Screen name='Order' component={Order} options={{headerShown:true}}/>
             <Stack.Screen name='Popular' component={Popular} options={{
                 headerShown:true,
                 title:'From Popular Pizzas',
                 headerStyle:{
-                    backgroundColor:'#FFBC80'
+                    backgroundColor:Theme.colors.ui.success
                 },
                 headerTintColor:'#C1F4C5',
                 headerTitleStyle:{

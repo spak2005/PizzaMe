@@ -107,6 +107,4 @@ statusView:{
         marginLeft:260,
         color:'gray'
 }
-
-
 })

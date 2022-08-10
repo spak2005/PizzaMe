@@ -1,24 +1,25 @@
-import { View, Image, Text, StyleSheet } from 'react-native';
-import { useFonts,Pacifico_400Regular } from '@expo-google-fonts/pacifico';
+import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useFonts, Overpass_100Thin, Overpass_200ExtraLight } from '@expo-google-fonts/overpass';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import { Theme } from '../Theme/Theme';
+
 
 export function Header () {
-    let [fontsLoaded] = useFonts({
-        Pacifico_400Regular
+    let [FontsLoaded] = useFonts({
+        Overpass_200ExtraLight,
+        Overpass_100Thin
     });
 
     return (
         <View style={styles.header}>
             <View style={styles.brand}>
-                <Image 
-                    source={require('../../assets/images/pizza.png')}
-                    style={styles.logo}
-                />
+                
                 <Text style={styles.brandName}>pizzame</Text>
             </View>
-            <Image 
-                source={require('../../assets/images/login.png')}
-                style={styles.siginIcon}
-            />
+            <TouchableOpacity style={styles.siginIcon}>
+                <FontAwesomeIcon icon={faArrowRightToBracket} size={Theme.points[4]}/>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -26,7 +27,9 @@ export function Header () {
 const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignContent:'center',
+        paddingTop:Theme.points[2],
     },
     brand: {
         flexDirection:'row'
@@ -34,15 +37,15 @@ const styles = StyleSheet.create({
     logo: {
         width: 48,
         height: 48,
-        marginRight:5
+        marginRight:Theme.points[1]
     },
     siginIcon:{
         width: 40,
         height:40
     },
     brandName: {
-        fontSize:32,
+        fontSize:Theme.points[4],
         fontWeight:'bold',
-        fontFamily:'Pacifico_400Regular',
+        fontFamily: 'Overpass_100Thin',
     },
 });

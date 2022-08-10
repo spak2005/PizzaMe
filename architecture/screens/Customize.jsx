@@ -3,15 +3,17 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-nati
 import { Button } from "react-native-paper";
 import { pizzas } from "../../assets/Data/pizzas";
 import { pizzaSizes } from "../../assets/Data/pizzas";
+import { Order } from "./Order";
 
 
 
-export function Customize ({route}){
+export function Customize ({navigation,route}){
 
     const [selected, setSelected] = useState({});
-    const [total, SetTotal] = useState(0);
+    const [total, setTotal] = useState(0);
     const [pizzaNames, setPizzaNames] = useState('');
-    const [pizzaSpice, setPizzaSpice] = useState (['']);
+    const [pizzaSpice, setPizzaSpice] = useState ([]);
+    const [sizeName, setSizeName] = useState([])
 
     function ProccedToDelivery(){
         if (total > 0){
@@ -19,7 +21,17 @@ export function Customize ({route}){
                     marginTop:10,
                     backgroundColor:'#064635'
                     }}
-                    contentStyle={{padding:10}}>Continue to delivery</Button>
+                    contentStyle={{padding:10}}
+                    onPress={() => {
+                        navigation.navigate('Order',{
+                            orderTotal:total,
+                            orderPizzaName:pizzaNames,
+                            orderPizzaIngredents:pizzaSpice,
+                            orderPizzaSize:sizeName
+                        });
+                    }}>
+                    Continue to delivery
+                    </Button>
             }
     }
 
@@ -58,7 +70,8 @@ export function Customize ({route}){
                         <TouchableOpacity
                          style={[styles.pizza,{ marginRight:Math.round(Math.random()*100), marginLeft:Math.round(Math.random()*100),}]}
                          onPress={()=>{
-                            SetTotal(total + item.fee);
+                            setTotal(total + item.fee);
+                            setSizeName(item.sizeName);
                          }}
                          >
                              <Text style={styles.pizzaTitle}>{item.ingreName}</Text>
@@ -76,8 +89,8 @@ export function Customize ({route}){
                     <TouchableOpacity
                      style={styles.sizeTouch}
                      onPress={()=>{
-                        SetTotal(total + item.fee);
-                        setPizzaSpice(pizzaSpice + '', +'', + item.ingreName)
+                        setPizzaSpice([pizzaSpice,...item.ingreName,', ']);
+                        setTotal(total + item.fee);
                      }}
                      >
                         <Text style={styles.sizeTitle}>{item.sizeName}</Text>  

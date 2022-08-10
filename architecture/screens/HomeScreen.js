@@ -1,8 +1,8 @@
-import { View, StyleSheet, Image, Text, TouchableOpacity, FlatList } from 'react-native';
-import { Card, TextInput, Title, Paragraph, Button } from 'react-native-paper';
+import { View, StyleSheet, Image, Text, TouchableOpacity, FlatList, TextInput } from 'react-native';
+import { Card, Title, Paragraph, Button } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Header } from '../components/header';
-// import { Menu } from '../components/menu';
+import { useFonts, Overpass_100Thin, Overpass_200ExtraLight } from '@expo-google-fonts/overpass';
 import { About } from './About';
 import { History } from './History';
 import { Profile } from './Profile';
@@ -10,8 +10,6 @@ import { Customize } from './Customize';
 import { Notifications } from './Notifications';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '../Theme/Theme';
-import styled from 'styled-components/native';
-
 
 const data = {
     favourites: [
@@ -30,7 +28,14 @@ const data = {
     ]
 }
 
+
+
  function HomeScreen({navigation}) {
+
+    // let [FontsLoaded] = useFonts({
+    //     Overpass_200ExtraLight,
+    //     Overpass_100Thin
+    // });
 
     return (
         <View style={styles.container} >
@@ -38,8 +43,6 @@ const data = {
 
             <TextInput
                 placeholder='search for a topin'
-                outlineColor='#FF9F45'
-                underlineColor='#F76E11'
                 style={styles.search}
             />
 
@@ -61,8 +64,7 @@ const data = {
                     );
                 }} key={({ item }) => { item.id }} horizontal />
             </View>
-
-            {/* baker's choice */}
+{/* baker's choice */ }
             <View style={styles.bakersChoice}>
                 <Text style={styles.popularHeadingText}>Baker's choice</Text>
                 <FlatList data={data.bakersChoice} renderItem={({ item }) => {
@@ -72,7 +74,7 @@ const data = {
                             <Card.Content>
                                 <Title>{item.name}</Title>
                                   <Paragraph>{item.note}</Paragraph>
-                                <Button mode='contained' color='coral'>Order</Button>
+                                <Button mode='contained' color={Theme.colors.ui.secondary}>Order</Button>
                             </Card.Content>
                         </Card>
                     );
@@ -124,31 +126,39 @@ export function Home () {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingHorizontal: 20
+        flex: Theme.points[1],
+        paddingHorizontal: Theme.space[3]
     },
     search: {
-        marginVertical: 20,
-        backgroundColor: '#FAEEE0'
+        marginTop: Theme.space[3],
+        backgroundColor: '#fff',
+        paddingHorizontal: 20,
+        paddingVertical:Theme.space[3],
+        borderRadius:50,
+        borderColor:Theme.colors.ui.secondary,
+        fontSize:Theme.points[3],
+        borderWidth:1
+
     },
     popularHeadingText: {
-        fontSize: 20,
-        marginTop: 20,
-        marginBottom: 5
+        fontSize: Theme.fonts.fontSize.title,
+        marginVertical: Theme.points[2],
+        // fontFamily: 'Overpass_100Thin',
     },
     popularItem: {
-        width: 120,
-        height: 120,
-        paddingVertical: 18,
-        paddingHorizontal: 18,
-        backgroundColor: '#FF9F45',
+        width: Theme.sizes[4],
+        height: Theme.sizes[4],
+        paddingVertical: Theme.points[4],
+        paddingHorizontal: Theme.points[2],
+        backgroundColor: Theme.colors.ui.secondary,
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: 15
+        marginRight: Theme.points[2],
+        
 
     },
     popularItemText: {
-        color: '#4A403A',
+        color: Theme.colors.text.secondary,
         fontWeight: 'bold'
     }
 });

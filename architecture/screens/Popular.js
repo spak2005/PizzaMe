@@ -14,7 +14,7 @@ export function Popular({route,navigation}){
         color3 = '' 
         color4 = '' 
         color5 = '' 
-        fontName1 = faStar
+        fontName1 = faStar    
         fontName2= faStar
         fontName3 = faStar
         fontName4 = faStar
