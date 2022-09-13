@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthNavigator } from './architecture/components/AuthNavigator';
 import { Maps } from './architecture/screens/map';
+import { app } from './architecture/Services/firebase';
 
             
 export default function App() {
@@ -12,10 +13,10 @@ export default function App() {
       <NavigationContainer>
         <AuthNavigator/>
       </NavigationContainer>
-
+      {/* <Maps/> */}
       <ExpoStatusBar style="auto" />
     </SafeAreaView>
-    // <Maps/>
+    
   );
 }
 

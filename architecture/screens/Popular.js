@@ -1,14 +1,45 @@
-import { Text, View, Image, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { useState } from "react";
+import { Text, View, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { Button } from "react-native-paper";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faStarHalfStroke } from "@fortawesome/free-solid-svg-icons";
+import { Theme } from "../Theme/Theme";
+import { db } from "../Services/firebase";
+import { setDoc, doc, updateDoc, addDoc, collection } from 'firebase/firestore'
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { pizzaSizes } from "../../assets/Data/pizzas";
+
+
 
 
 export function Popular({route,navigation}){
-    
+
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastname] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('')
+    const [addressDetails, setAddressDetails] = useState('');
+    const [latitude, setLatitude] = useState(0);
+    const [longitude, setLongitude] = useState(0);
+    const [total, setTotal] = useState(0);
+    const [sizeName, setSizeName] = useState('')
+
+
     const {pizzaImg,pizzaName,pizzaRating,pizzaPrice} = route.params;
      
-     
+    function incase (){
+     if (total < 0) {
+        return () => {
+            Alert.alert(
+                'Order Confirmation',
+                'We have received your customized pizza order.',
+                [{text:'Okay, Thanks',onPress:() => {navigation.navigate('Home')}}]
+            )
+          }
+        }
+      }
+      
         color1 = '' 
         color2 = '' 
         color3 = '' 
@@ -163,20 +194,88 @@ export function Popular({route,navigation}){
                             <FontAwesomeIcon icon={fontName4} size={24} color={color4} style={{marginRight:5}}/>    
                             <FontAwesomeIcon icon={fontName5} size={24} color={color5} style={{marginRight:5}}/> 
                         </View>
-                    <Text style={styles.price}>NGN{pizzaPrice}</Text>
+                    <Text style={styles.price}>₦{total}</Text>
                 </View>
                               
             </View>
-                <View style={styles.delivery}>
-                    <Text style={styles.heading}>Order {pizzaName}</Text>
-                    <TextInput keyboardType='default' placeholder="first name" style={styles.input}/>
-                    <TextInput keyboardType='default' placeholder="last name" style={styles.input}/>
-                    <TextInput keyboardType='email-address' placeholder="email adress" style={styles.input}/>
-                    <TextInput keyboardType='numeric' placeholder="phone number" style={styles.input}/>
-                    <TouchableOpacity style={styles.orderNow}>
-                        <Text style={styles.orderNowText}>Order Now</Text>
-                    </TouchableOpacity>
-                </View>
+
+                <ScrollView>
+                    <View style={styles.delivery}>
+
+                            {/* available sizes */}
+                    <View style={styles.sizes}>
+                        {Object.values(pizzaSizes).map((item) => (
+                            <TouchableOpacity
+                            style={styles.sizeTouch}
+                            onPress={()=>{
+                                setTotal(pizzaPrice + item.fee);
+                                setSizeName(item.sizeName);
+                            }}
+                            >
+                                <Text style={styles.sizeTitle}>{item.sizeName}</Text>  
+                            </TouchableOpacity>
+                        ))}
+                        
+                        {/* available sizes */}
+                    
+                    </View>
+                    <View style={styles.inputHolder}>
+                        <TextInput keyboardType='default' placeholder="first name" style={styles.input}
+                        onChangeText={fname => setFirstName(fname)}/>
+                        
+                        <TextInput keyboardType='default' placeholder="last name" style={styles.input}
+                        onChangeText={lname => setLastname(lname)}/>
+
+                        <TextInput keyboardType='email-address' placeholder="email adress" style={styles.input}
+                        onChangeText={email => setEmail(email)}/>
+
+                        <TextInput keyboardType='numeric' placeholder="phone number" style={styles.input}
+                        onChangeText={phone => setPhone(phone)}/>
+
+                        <View style={styles.mapLocation}>
+
+                            {/* Google Map Autocomplete */}
+                            <GooglePlacesAutocomplete
+                            placeholder="Search"
+                            query={{
+                                key:'AIzaSyAltTdZ5mgwXmOAdeDKLqKf8OfJovDQWBI',
+                                language:'en'
+                            }}
+                            fetchDetails={true}
+                            enablePoweredByContainer={false}
+                            onPress={(data, details = null) => {
+                                console.log(details.geometry.location.lat)
+                            }}
+                            minLength={2}/>
+                        </View>
+                    </View>
+                       
+
+                        <Button mode='outlined'color="#fff" style={{
+                            marginTop:70,
+                            backgroundColor:Theme.colors.ui.primary,
+                            
+                            }}
+                            contentStyle={{padding:10,}}
+                            onPress={() => navigation.navigate('Checkout',{
+                                price:total,
+                                pizzaName:pizzaName,
+                                ingredients:'default',
+                                size:'default',
+                                fname:firstName,
+                                lname:lastName,
+                                email:email,
+                                phone:phone,
+                                lat:latitude,
+                                lon:longitude,
+                                address:addressDetails
+                            })}
+                            >
+                            Complete your order
+                        </Button>
+                    </View>
+                </ScrollView>
+               
                
         </View>
     )
@@ -186,6 +285,7 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         paddingHorizontal:10,
+        paddingBottom:10
 
 
 
@@ -210,6 +310,31 @@ const styles = StyleSheet.create({
         fontSize:28,
         fontWeight:'bold'
 
+        
+    },
+    sizes:{
+        marginTop:20,
+        flexDirection:'row',
+        justifyContent:'space-around'
+    
+    },
+    sizeTouch:{
+        borderWidth:1,
+        borderColor:'#519259',
+        paddingHorizontal:8,
+        paddingVertical:8,
+        borderRadius:10,
+        marginRight:5,
+    },
+    sizeTitle:{
+        color:'#064',
+        fontSize:18,
+        fontWeight:'bold',
+        textAlign:'center'
+    
+    },
+    inputHolder:{
+        marginTop:20
     },
     rating:{
         flexDirection:'row',
@@ -235,7 +360,7 @@ const styles = StyleSheet.create({
         paddingHorizontal:10,
         paddingVertical:12,
         borderRadius:50,
-        marginBottom:10,
+        marginBottom:5,
         backgroundColor:'#fff'
         
     },

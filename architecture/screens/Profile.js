@@ -1,6 +1,6 @@
-import {View, StyleSheet, Text, Image,TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, Image,TouchableOpacity, ScrollView} from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-
+import { Theme } from '../Theme/Theme'
 
 
 export function Profile (){
@@ -11,6 +11,7 @@ export function Profile (){
                 style={styles.bioImg}
                 />
                 <Text style={styles.bioName}>Vitalis Orugbo</Text>
+                <Text style={styles.email}>vitalisorugbo@gmail.com</Text>
 
                 <TouchableOpacity style={styles.editView}>
                     <Text style={styles.editDetails}>Edit details </Text>
@@ -22,35 +23,59 @@ export function Profile (){
                 {/* icon to modify detail */}
             </View>
             <View style={styles.details}>
-
-                <View style={styles.adress}>
-                        {/* icon */}
-                        <Text style={styles.adressText}>Adress: Flat 3 Block 1 emotan street, Kubwa</Text>
+            {/* This where the second section goes */}
+                <View style={styles.detailsHolder}>
+                    <Image 
+                    source={require('../../assets/phone.png')}
+                    style={styles.icons} />
+                    <Text style={styles.detailsText}>08037268245</Text>
                 </View>
-
-                <View style={styles.city}>
-                    {/* icon */}
-                    <Text style={styles.cityText}>City: Abuja</Text>
+                <View style={styles.detailsHolder}>
+                <Image 
+                    source={require('../../assets/world.png')}
+                    style={styles.icons} />
+                    <Text style={styles.detailsText}>Ikeja Lagos</Text>
                 </View>
-                
+                <View style={styles.detailsHolder}>
+                <Image 
+                    source={require('../../assets/pin.png')}
+                    style={styles.icons} />
+                    <Text style={styles.detailsText}>Gado Nasko Road Block 3 Flat 1</Text>
+                </View>
+                <View style={styles.detailsHolder}>
+                <Image 
+                    source={require('../../assets/femalemale.png')}
+                    style={styles.icons} />
+                    <Text style={styles.detailsText}>Male</Text>
+                </View>
+                <View style={styles.detailsHolder}>
+                <Image 
+                    source={require('../../assets/star.png')}
+                    style={styles.icons} />
+                    <Text style={styles.detailsText}>Favourites</Text>
+                </View>
+                <View style={styles.changePasswordHolder}>
+                <Image 
+                    source={require('../../assets/key.png')}
+                    style={styles.icons} />
+                    <Text style={styles.changePasswordText}>Change Password</Text>
+                </View>
             </View>
 
-            <View style={styles.password}>
-                    <Text>Password: #C**************0K</Text>
-            </View>
-
-            <View style={styles.emailAdress}>
-                    <Text>Email Adress: spark234@gmail.com</Text>
-            </View>
+            
 
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container:{},
+    container:{
+        backgroundColor:Theme.colors.ui.secondary,
+        flex:1,
+
+    },
     bio:{
-        backgroundColor:'#FFBC80',
+        backgroundColor:Theme.colors.ui.secondary,
         alignItems:'center',
         borderRadius:20
     },
@@ -60,14 +85,17 @@ const styles = StyleSheet.create({
         borderRadius:60,
         alignSelf:'center',
         justifyContent:'center',
-        marginTop:5
+        marginTop:20
        },
     bioName:{
         fontSize:20,
-        fontWeight:'bold'
+        fontWeight:'bold',
+        marginBottom:5
     },
     email:{
-        fontSize:14
+        fontSize:14,
+        fontWeight:'bold',
+
     },
     editDetails:{
         fontSize:16
@@ -80,14 +108,53 @@ const styles = StyleSheet.create({
     editView:{
         flexDirection:'row',
         marginVertical:5,
-        height:50,
+        height:40,
         width:140,
         backgroundColor:'#F76E11',
         justifyContent:'center',
         alignItems:'center',
-        borderRadius:50
+        borderRadius:10
     },
-    
+    details:{
+        backgroundColor:'#fff',
+        paddingVertical:20,
+        borderTopStartRadius:30,
+        borderTopRightRadius:30
+    },
+    detailsText:{
+        fontSize:16,
+        padding:12,
+        
+    },
+    detailsHolder:{
+        borderBottomWidth:2,
+        borderBottomColor:'rgba(128,128,128,0.5)',
+        marginBottom:15,
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    changePasswordHolder:{
+        marginBottom:15,
+        borderBottomWidth:2,
+        borderBottomColor:'rgba(128,128,128,0.5)',
+        flexDirection:'row',
+        alignItems:'center',
+        
+    },
+    changePasswordText:{
+        color:'red',
+        fontSize:16,
+        padding:12,
+        
+    },
+    icons:{
+        height:20,
+        width:20,
+        marginLeft:20,
+    },
+    arrows:{
+
+    },
     adress:{
         backgroundColor:'#FFBC80', 
         width:350,

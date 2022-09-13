@@ -3,64 +3,115 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, TextInput 
 import { Button } from "react-native-paper";
 import { Theme } from "../Theme/Theme";
 import { db } from "../Services/firebase";
-import { setDoc, doc } from 'firebase/firestore'
+import { setDoc, doc, updateDoc, addDoc, collection } from 'firebase/firestore'
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 
 export function Order({navigation, route}){
 
-    const [firstname, setFirstname] = useState('');
-    const [lastname, setLastname] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const [address, setAdress] = useState('');
+    const [latitude,setLatitude] = useState(0);
+    const [longitude,setLongitude] = useState(0);
+    const [addressDetails,setAddressDetails] = useState('');
 
 
 
-    const {orderTotal, orderPizzaName, orderPizzaIngredients, orderPizzaSize} = route.params
+
+    const {
+        orderTotal,
+        orderPizzaName,
+        orderPizzaIngredients,
+        orderPizzaSize
+    } = route.params;
+
 
     //add values to an existing document
-    function create (){
-        setDoc(doc(db, 'purchases', ''), {})
-    }
+    
 
+
+    //update documents on firestore
+    function updateDocument (){
+        updateDoc(collection(db, 'purchases'), {
+            firstname:'Uzo',
+            lastname:'Michael'
+        })
+        .then(()=>{})
+    }
     return(
-        <View style = {styles.container}>
-            {/* first name, last name, phone, email, adress */}
-            
-            <View style={styles.delivery}>
-                <Text style={styles.heading}>Order {orderPizzaName} pizza</Text>
-                <TextInput keyboardType='default' placeholder="first name" style={styles.input}
-                onChangeText={(fname) => {setFirstname(fname)}}/>
-                <TextInput keyboardType='default' placeholder="last name" style={styles.input}
-                onChangeText={(lname) => {setLastname(lname)}}/>
-                <TextInput keyboardType='email-address' placeholder="email adress" style={styles.input}
-                onChangeText={(email) => {setEmail(email)}}/>
-                <TextInput keyboardType='numeric' placeholder="phone number" style={styles.input}
-                onChangeText={(phone) => {setPhone(phone)}}/> 
-                <TextInput keyboardType='de' placeholder="phone number" style={styles.input}
-                onChangeText={(phone) => {setPhone(phone)}}/> 
+        <View style={styles.parent}>
+            <ScrollView>
+            <View style = {styles.container}>
+                {/* first name, last name, phone, email, adress */}
+                
+                <View style={styles.delivery}>
+                    <Text style={styles.heading}>Order {orderPizzaName} pizza of ₦{orderTotal}</Text>
+                    <TextInput keyboardType='default' placeholder="first name" style={styles.input}
+                    onChangeText={(fname) => {setFirstName(fname)}}/>
+                    <TextInput keyboardType='default' placeholder="last name" style={styles.input}
+                    onChangeText={(lname) => {setLastName(lname)}}/>
+                    <TextInput keyboardType='email-address' placeholder="email adress" style={styles.input}
+                    onChangeText={(email) => {setEmail(email)}}/>
+                    <TextInput keyboardType='numeric' placeholder="phone number" style={styles.input}
+                    onChangeText={(phone) => {setPhone(phone)}}/> 
+                </View>
+
+                
+
             </View>
 
-            <Button mode='outlined'color="#fff" style={{
-                    marginTop:30,
-                    backgroundColor:Theme.colors.ui.primary,
+            <View style={styles.mapLocation}>
+                <GooglePlacesAutocomplete
+                    placeholder="Search"
+                    query={{
+                        key:'AIzaSyAltTdZ5mgwXmOAdeDKLqKf8OfJovDQWBI',
+                        language:'en'
                     }}
-                    contentStyle={{padding:10,}}
-                    onPress={() => {
-                       
+                    fetchDetails={true}
+                    enablePoweredByContainer={false}
+                    onPress={(data, details = null) => {
+                        console.log(details.geometry.location.lat)
                     }}
-                    >
-                    Complete your order
-            </Button>
+                    minLength={2}/>
+            </View>
 
+            <View style={styles.submit}>
+                <Button mode='outlined'color="#fff" style={{
+                        marginTop:30,
+                        backgroundColor:Theme.colors.ui.primary,
+                        }}
+                        contentStyle={{padding:10,}}
+                        onPress={() => navigation.navigate('Checkout',{
+                            price:orderTotal,
+                            pizzaName:orderPizzaName,
+                            ingredients:orderPizzaIngredients,
+                            size:orderPizzaSize,
+                            fname:firstName,
+                            lname:lastName,
+                            email:email,
+                            phone:phone,
+                            lat:latitude,
+                            lon:longitude,
+                            address:addressDetails
+                        })}
+                        >
+                        Complete your order
+                </Button>
+            </View>
+            </ScrollView>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container:{
+    parent:{
         padding:10,
         flex:1
+    },
+    container:{  
+        flex:2
     },
     input:{
         borderWidth:1,
@@ -68,27 +119,24 @@ const styles = StyleSheet.create({
         paddingHorizontal:10,
         paddingVertical:12,
         borderRadius:50,
-        marginBottom:10,
+        marginBottom:5,
         backgroundColor:'#fff'
         
     },
     heading:{
-        fontSize:28,
+        fontSize:18,
         textAlign:'center',
-        marginBottom:16
+        marginBottom:10
     },
-    orderNow:{
-        paddingHorizontal:10,
-        paddingVertical:12,
-        borderRadius:50,
-        backgroundColor:'#064635' 
+      mapLocation:{
+        marginTop:2,
+        flex:3,
+        marginBottom:190,
     },
-    orderNowText:{
-        fontSize:28,
-        textAlign:'center',
-        fontWeight:'bold',
-        color:'#fff'
-    }
+    submit:{
+        flex:1,
+    },
+   
 })
 
 

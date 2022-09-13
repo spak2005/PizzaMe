@@ -3,6 +3,13 @@ import styled from "styled-components/native";
 import MapView,{PROVIDER_GOOGLE} from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import  Constants  from "expo-constants";
+import { Theme } from "../Theme/Theme";
+
+const Title = styled(Text)`
+    color:${Theme.colors.text.secondary};
+    margin-bottom:${Theme.space[2]};
+    font-size:${Theme.fonts.fontSize.title}
+`;
 
 
 const {width,height} = Dimensions.get('window');
@@ -22,7 +29,18 @@ export function Maps (){
             <MapView style={styles.map} provider={PROVIDER_GOOGLE} initialRegion={INITIAL_POSITION}/>
 
             <View style={styles.mapAutoComplete}>
-                <GooglePlacesAutocomplete placeholder="Search"/>
+                <GooglePlacesAutocomplete
+                 placeholder="Search"
+                 query={{
+                    key:'AIzaSyBEywKubvr28MnLtrbT5SyiUrbk_4zYkVc',
+                    language:'en'
+                 }}
+                 fetchDetails={true}
+                 enablePoweredByContainer={false}
+                 onPress={(data, details = null) => {
+                    console.log(details.geometry.location.lat)
+                 }}
+                 minLength={2}/>
             </View>
         </>
     )

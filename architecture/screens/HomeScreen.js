@@ -1,45 +1,32 @@
 import { View, StyleSheet, Image, Text, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import { Card, Title, Paragraph, Button } from 'react-native-paper';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Header } from '../components/header';
-import { useFonts, Overpass_100Thin, Overpass_200ExtraLight } from '@expo-google-fonts/overpass';
-import { About } from './About';
 import { History } from './History';
 import { Profile } from './Profile';
 import { Customize } from './Customize';
 import { Notifications } from './Notifications';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '../Theme/Theme';
+import { data } from '../../assets/Data/DisplayedPizza';
 
-const data = {
-    favourites: [
-        { name: 'mozzarella', id: '1', price:4250, rating:2.5, thumbnail: 'https://www.guardini.com/media/zoo/images/pizza_basilico_d48383f64dd294fcf26b3763d103fd6f.jpg' },
-        { name: 'parmesan', id: '2', price:4500, rating:4.1, thumbnail: 'https://image.shutterstock.com/image-photo/delicious-pizza-served-on-wooden-600w-529633279.jpg' },
-        { name: 'provolone', id: '3', price:3500, rating:1.0, thumbnail: 'https://thumbs.dreamstime.com/b/pepperoni-pizza-white-background-13791751.jpg' },
-        { name: 'blue cheese', id: '4', price:4500, rating:4.9, thumbnail: 'https://thumbs.dreamstime.com/b/pizza-3984993.jpg' },
-        { name: 'broccoli', id: '5',price:5000, rating:1.5, thumbnail: 'https://thumbs.dreamstime.com/b/pepperoni-pizza-hand-taking-slice-61831527.jpg' }
-    ],
-    bakersChoice: [
-        { name: 'pancetta', id: '6', note: 'Made with the finest Italian ingredients', thumbnail: 'https://images.pexels.com/photos/1146760/pexels-photo-1146760.jpeg' },
-        { name: 'speck', id: '7', note: 'Made with the finest Italian ingredients', thumbnail: 'https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg' },
-        { name: 'anchovies', id: '8', note: 'Made with the finest Italian ingredients', thumbnail: 'https://images.pexels.com/photos/905847/pexels-photo-905847.jpeg' },
-        { name: 'zucchini', id: '9', note: 'Made with the finest Italian ingredients', thumbnail: 'https://images.pexels.com/photos/708587/pexels-photo-708587.jpeg' },
-        { name: 'pancetta', id: '10', note: 'Made with the finest Italian ingredients', thumbnail: 'https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg' }
-    ]
-}
 
 
 
  function HomeScreen({navigation}) {
 
-    // let [FontsLoaded] = useFonts({
-    //     Overpass_200ExtraLight,
-    //     Overpass_100Thin
-    // });
-
     return (
         <View style={styles.container} >
-            <Header />
+             <View style={styles.header}>
+                <View style={styles.brand}>
+                    
+                    <Text style={styles.brandName}>pizzame</Text>
+                </View>
+                <TouchableOpacity style={styles.siginIcon} onPress={()=> navigation.navigate('Signin')}>
+                    <FontAwesomeIcon icon={faArrowRightToBracket} size={Theme.points[4]}/>
+                </TouchableOpacity>
+            </View>
 
             <TextInput
                 placeholder='search for a topin'
@@ -74,7 +61,13 @@ const data = {
                             <Card.Content>
                                 <Title>{item.name}</Title>
                                   <Paragraph>{item.note}</Paragraph>
-                                <Button mode='contained' color={Theme.colors.ui.secondary}>Order</Button>
+                                <Button mode='contained' color={Theme.colors.ui.secondary}
+                                onPress={()=>{navigation.navigate('About', {
+                                    pizzaName:item.name,
+                                    pizzaImg:item.thumbnail,
+                                    note:item.note
+
+                                })}}>Order</Button>
                             </Card.Content>
                         </Card>
                     );
@@ -129,6 +122,28 @@ const styles = StyleSheet.create({
         flex: Theme.points[1],
         paddingHorizontal: Theme.space[3]
     },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignContent:'center',
+        paddingTop:Theme.points[2],
+    },
+    brand: {
+        flexDirection:'row'
+    },
+    logo: {
+        width: 48,
+        height: 48,
+        marginRight:Theme.points[1]
+    },
+    siginIcon:{
+        width: 40,
+        height:40
+    },
+    brandName: {
+        fontSize:Theme.points[4],
+        fontWeight:'bold',
+    },
     search: {
         marginTop: Theme.space[3],
         backgroundColor: '#fff',
@@ -143,7 +158,6 @@ const styles = StyleSheet.create({
     popularHeadingText: {
         fontSize: Theme.fonts.fontSize.title,
         marginVertical: Theme.points[2],
-        // fontFamily: 'Overpass_100Thin',
     },
     popularItem: {
         width: Theme.sizes[4],

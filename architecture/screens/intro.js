@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
 import { Button } from 'react-native-paper';
+import { Theme } from '../Theme/Theme';
 
 export function Intro ({navigation}) {
     return (
@@ -18,7 +19,7 @@ export function Intro ({navigation}) {
 
                 <Button 
                 mode='contained' 
-                color='#FF9F45' 
+                color={Theme.colors.ui.secondary}
                 style={styles.btn}
                 onPress={ () => navigation.navigate('Home') }
                 >Explore PizzaMe</Button>

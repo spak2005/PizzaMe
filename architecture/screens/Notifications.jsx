@@ -1,13 +1,19 @@
-import { View, Text, Button } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import { Theme } from "../Theme/Theme";
 
 export function Notifications (){
     return(
         <View>
-            <Text></Text>
-            <Button title="click here" onPress={(item)=>{
-                alert('hello customer')
-            }}
-            ></Button>
+            <Text style={styles.defaultText}> You haven't recieved notifications yet</Text>
+            
         </View>
     )
 }
+const styles = StyleSheet.create({
+    defaultText:{
+        fontSize:20,
+        textAlign:'center',
+        color:Theme.colors.ui.secondary
+
+    }
+})

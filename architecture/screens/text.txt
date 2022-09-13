@@ -1,0 +1,59 @@
+function create (){
+        const now = new Date();
+        const nowTimeStamp = now.getTime();
+
+        addDoc(collection(db, 'purchases' ), {
+            address:address,
+            email:email,
+            firstname:firstname,
+            lastname:lastname,
+            phone:phone,
+            pizzaname:orderPizzaName,
+            price:orderTotal,
+            size:orderTotal,
+            timestamps:nowTimeStamp
+        })
+        .then(()=>{
+            Alert.alert(
+                'Order Confirmation',
+                'We have recieved your customized pizza order.',
+                [{text:'Okay, Thanks', onPress:()=> {navigation.push('Home')}}]
+            )
+        })
+        .catch
+    }
+
+    
+
+
+    import { View, Alert } from "react-native";
+import {Paystack} from ""
+
+export function Pay({navigation,route}){
+    const {price, email, phone} = route.params;
+    return(
+        <View style={{flex: 1}}>
+      <Paystack
+        paystackKey="your-public-key-here"
+        billingEmail={email}
+        amount={price}
+        activityIndicatorColor="green"
+        onCancel={(e) => {
+          // handle response here
+          navigation.navigate('Checkout')
+        }}
+        onSuccess={(res) => {
+          // handle response here
+          Alert.alert(
+            'Payment Status',
+            `Your payment of ${price} was successful`,
+            [{text:'Return to Customiza', onPress:navigation.navigate('Customize')}]
+          )
+        }}
+        autoStart={true}      />
+        <TouchableOpacity onPress={()=> paystackWebViewRef.current.startTransaction()}>
+          <Text>Pay Now</Text>
+        </TouchableOpacity>
+      </View>
+    )
+}

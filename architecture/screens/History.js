@@ -1,5 +1,9 @@
+import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-
+import { db } from "../Services/firebase";
+import { onSnapshot, doc } from "firebase/firestore";
+import { collection, Snapshot } from "firebase/firestore";
+import { Theme } from '../Theme/Theme'
 export function History (){
 
 const HistoryData = 
@@ -11,6 +15,21 @@ const HistoryData =
     {pizzaName:'Provolone', price:'5000', statusD:'Delivered', date:'03/7/2012', time:'04:40', payment:'credit', id:'key5'},
     {pizzaName:'Chicken', price:'2900', statusD:'Terminated', date:'01/4/2012', time:'15:00', payment:'debit', id:'key6'},
 ]
+
+const [pizzaOrders,setPizzaOrders] = useState([]);
+
+  useEffect(() => {
+      onSnapshot(collection(db,'orders'), (querySnapshot) => {
+          const allOrders = [];
+          querySnapshot.forEach((collection) => {
+              allOrders.push(collection.data());
+              setPizzaOrders(allOrders)
+          })
+      },
+      (error) => console.log(error));
+  },[]);
+
+  console.log(pizzaOrders);
 
 
     return(
@@ -47,7 +66,7 @@ const styles = StyleSheet.create({
         marginVertical:10
     },
     header:{
-        backgroundColor:'#FFBC80',
+        backgroundColor:Theme.colors.ui.secondary,
         borderRadius:15,
         //height:120,
         width:340,
@@ -68,9 +87,6 @@ const styles = StyleSheet.create({
         fontWeight:'400',
         fontSize:30,
         marginLeft:50,
-
-
-
 },
     dateTime:{
         flexDirection:'row',

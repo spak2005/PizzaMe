@@ -4,16 +4,18 @@ import { Button } from "react-native-paper";
 import { pizzas } from "../../assets/Data/pizzas";
 import { pizzaSizes } from "../../assets/Data/pizzas";
 import { Order } from "./Order";
-
+import { Theme } from "../Theme/Theme";
 
 
 export function Customize ({navigation,route}){
+
+    
 
     const [selected, setSelected] = useState({});
     const [total, setTotal] = useState(0);
     const [pizzaNames, setPizzaNames] = useState('');
     const [pizzaSpice, setPizzaSpice] = useState ([]);
-    const [sizeName, setSizeName] = useState([])
+    const [sizeName, setSizeName] = useState('')
 
     function ProccedToDelivery(){
         if (total > 0){
@@ -36,7 +38,7 @@ export function Customize ({navigation,route}){
     }
 
     return(
-        <View style ={styles.container}>
+        <ScrollView style ={styles.container}>
             <Text style={styles.heading}>Customize Your Order </Text>
             {/*Pizza billing Total */}
             <View style ={styles.billing}>
@@ -51,7 +53,7 @@ export function Customize ({navigation,route}){
                 {Object.values(pizzas).map((singlePizza)=> (
                     <TouchableOpacity
                      style ={styles.selectedPizza} 
-                     onPress={(item) => {
+                     onPress={() => {
                      setSelected(singlePizza.ingredients);
                      setPizzaNames(singlePizza.pizzaName)
                      }}
@@ -68,10 +70,11 @@ export function Customize ({navigation,route}){
                 {
                     Object.values(selected).map(item => (
                         <TouchableOpacity
-                         style={[styles.pizza,{ marginRight:Math.round(Math.random()*100), marginLeft:Math.round(Math.random()*100),}]}
+                         style={[styles.pizza,{ marginRight:Math.round(Math.random()*10), marginLeft:Math.round(Math.random()*100),}]}
                          onPress={()=>{
                             setTotal(total + item.fee);
-                            setSizeName(item.sizeName);
+                            setPizzaSpice([pizzaSpice,...item.ingreName,', ']);
+
                          }}
                          >
                              <Text style={styles.pizzaTitle}>{item.ingreName}</Text>
@@ -85,29 +88,31 @@ export function Customize ({navigation,route}){
 
              {/* available sizes */}
              <View style={styles.sizes}>
-                {Object.values(pizzaSizes.map((item) => (
+                {Object.values(pizzaSizes).map((item) => (
                     <TouchableOpacity
                      style={styles.sizeTouch}
                      onPress={()=>{
-                        setPizzaSpice([pizzaSpice,...item.ingreName,', ']);
                         setTotal(total + item.fee);
+                        setSizeName(item.sizeName);
                      }}
                      >
                         <Text style={styles.sizeTitle}>{item.sizeName}</Text>  
                     </TouchableOpacity>
-                )))}
+                ))}
                 
+                {/* available sizes */}
+           
                 
              </View>
              {/*Continue to delivery */}
                 {ProccedToDelivery()}    
-    </View>
+    </ScrollView>
     ) 
 }
 
 const styles = StyleSheet.create({
     container:{
-        paddiing:20,
+        padding:15,
     },
     heading:{
         fontSize:26,
@@ -119,9 +124,9 @@ const styles = StyleSheet.create({
         marginTop:20
     },
     pizza:{
-        backgroundColor:'#FFBC80',
-        paddingHorizontal:20,
-        paddingVertical:12,
+        backgroundColor:Theme.colors.ui.secondary,
+        paddingHorizontal:10,
+        paddingVertical:10,
         borderRadius:50,
         marginBottom:5,
         
@@ -164,9 +169,7 @@ sizeTitle:{
 
 },
 billing:{
-    backgroundColor:'#B8B7B7',
-    paddingHorizontal:10,
-    paddingVertical:14,
+    backgroundColor:Theme.colors.ui.secondary,
     marginBottom:20,
     marginTop:20,
     borderRadius:10

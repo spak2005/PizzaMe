@@ -17,7 +17,7 @@ export function Header () {
                 
                 <Text style={styles.brandName}>pizzame</Text>
             </View>
-            <TouchableOpacity style={styles.siginIcon}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('Singup')}}>
                 <FontAwesomeIcon icon={faArrowRightToBracket} size={Theme.points[4]}/>
             </TouchableOpacity>
         </View>
